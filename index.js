@@ -7,6 +7,7 @@ const ThemesRouter = require('./controllers/themes.controller');
 const MultimediaTypesRouter = require('./controllers/multimediaTypes.controller');
 require('dotenv').config();
 
+const port = process.env.PORT || 3000;
 const app = express();
 
 // Handle cors a lo maldita sea
@@ -20,7 +21,7 @@ app.use('/themes', ThemesRouter);
 app.use('/multimedia-types', MultimediaTypesRouter);
 
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3001');
+app.listen(port, () => {
+    console.log('Server is running on port:' + port);
 });
 
