@@ -20,11 +20,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build project
-      run: |
-        npm run build  # Si tienes un script de build en tu package.json
-        # Si no tienes un script de build, puedes eliminar esta línea
-
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
