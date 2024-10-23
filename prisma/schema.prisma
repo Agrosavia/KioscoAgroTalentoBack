@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Multimedia {
+  id               Int            @id @default(autoincrement())
+  name             String
+  multimediaType   MultimediaType @relation(fields: [multimediaTypeId], references: [id])
+  multimediaTypeId Int
+  url              String?        
+  tags             Tag[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  events           MultimediaOnEvent[]
+}
+
+model Tag {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  verboseName String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  multimedias Multimedia[]
+}
+
+model Theme {
+  id             Int      @id @default(autoincrement())
+  name           String
+  primaryColor   String
+  secondaryColor String
+  tertiaryColor  String
+  banner         String
+  background     String
+  logo           String
+  events         Event[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model MultimediaType {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  verboseName String
+  media       Multimedia[]
+  iconClass   String     @default("fa-photo-film") 
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  date        DateTime
+  theme       Theme?    @relation(fields: [themeId], references: [id])
+  themeId     Int?
+  active      Boolean
+  image       String   @default("https://plus.unsplash.com/premium_photo-1661935875460-f239deafada1?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  multimedias MultimediaOnEvent[]
+}
+
+model MultimediaOnEvent {
+  id            Int         @id @default(autoincrement())
+  multimedia    Multimedia  @relation(fields: [multimediaId], references: [id])
+  multimediaId  Int
+  event         Event       @relation(fields: [eventId], references: [id])
+  eventId       Int
+  iconClass     String?
+  isCarrousel   Boolean     @default(false)
+  sortingOrder  Int         @default(0)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([multimediaId, eventId])
+}
