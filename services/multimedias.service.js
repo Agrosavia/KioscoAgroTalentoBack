@@ -113,9 +113,11 @@ async function deleteMultimedia(id) {
         }
     });
 
+    console.log(multimedia);
     if (multimedia.url && multimedia.multimediaTypeId !== 1) {
         const blobName = path.basename(new URL(multimedia.url).pathname);
         await azureBlobService.deleteFile('images', blobName);
+       
     }
 
     return await prisma.multimedia.delete({
