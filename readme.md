@@ -28,7 +28,7 @@
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com/lescobarlinero/KioscoAgroTalentoBack.git
+   git clone repourl
    ```
 2. Navegar al directorio del proyecto:
    ```bash
