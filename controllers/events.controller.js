@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', upload.single('image'), async (req, res) => {
 
-    let { name, description, active, date, theme } = req.body;
+    let { name, description, active, date, themeId } = req.body;
 
     // Validate required fields
     if (!name || !description || !date) {
@@ -29,7 +29,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
     // parse values
     active = active === 'true';
-    theme = parseInt(theme);
+    theme = parseInt(themeId);
 
     // get the image file from the request
     const image = req.file;

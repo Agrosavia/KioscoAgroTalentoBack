@@ -16,8 +16,10 @@ async function uploadFile(containerName, filePath, blobName) {
 async function deleteFile(containerName, blobName) {
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    console.log('blob name: ', blobName);
+    console.log('blockBlobClient: ', blockBlobClient);
 
-    await blockBlobClient.delete();
+    await blockBlobClient.deleteIfExists();
 }
 
 module.exports = { uploadFile, deleteFile, blobServiceClient };
