@@ -7,7 +7,7 @@ const ThemesRouter = require('./controllers/themes.controller');
 const MultimediaTypesRouter = require('./controllers/multimediaTypes.controller');
 require('dotenv').config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const app = express();
 
 // Handle cors a lo maldita sea
