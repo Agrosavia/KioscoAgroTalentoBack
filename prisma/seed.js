@@ -40,9 +40,9 @@ async function createThemes() {
             primaryColor: '#079646',
             secondaryColor: '#0F5AA3',
             tertiaryColor: '#F7F7F7',
-            banner: 'https://kioscostorage.blob.core.windows.net/images/banner-agrosavia.jpg',
-            logo: 'https://kioscostorage.blob.core.windows.net/images/logo-agrosavia.png',
-            background: 'https://kioscostorage.blob.core.windows.net/images/bg-agrosavia.png',
+            banner: 'static/1741020063030-banneragrotalento.jpeg.jpeg',
+            logo: 'static/1741020085652-logo agrosavia white.png.png',
+            background: 'static/1741020041603-backgroundagro.png.png',
         }
     })
 }
@@ -100,124 +100,6 @@ async function createTags() {
     })
 }
 
-async function createMultimedias() {
-    await prisma.multimedia.deleteMany();
-    const multimedia = await prisma.multimedia.create({
-        data: {
-            name: 'Imagen de Prueba 1',
-            url: 'https://kioscostorage.blob.core.windows.net/images/1725227278066-istockphoto-153737841-612x612.jpg',
-            multimediaType: { connect: { id: 2 } },
-            tags: {
-                connect: [
-                    { id: 7 }
-                ]
-            }
-        }
-    })
-    const multimedia2 = await prisma.multimedia.create({
-        data: {
-            name: 'Imagen de Prueba 2',
-            url: 'https://kioscostorage.blob.core.windows.net/images/1725227278066-istockphoto-153737841-612x612.jpg',
-            multimediaType: { connect: { id: 2 } },
-            tags: {
-                connect: [
-                    { id: 7 }
-                ]
-            }
-        }
-    })
-    const multimedia3 = await prisma.multimedia.create({
-        data: {
-            name: 'Imagen de Prueba 3',
-            url: 'https://kioscostorage.blob.core.windows.net/images/1725227278066-istockphoto-153737841-612x612.jpg',
-            multimediaType: { connect: { id: 2 } },
-            tags: {
-                connect: [
-                    { id: 7 }
-                ]
-            }
-        }
-    })
-
-    
-    const videoFresa1 = await prisma.multimedia.create({
-        data: {
-            name: 'Video de Fresa 1',
-            url: 'https://www.youtube.com/watch?v=6v2L2UGZJAM',
-            multimediaType: { connect: { id: 1 } },
-            tags: {
-                connect: [
-                    { id: 2 }
-                ]
-            }
-        }
-    })
-    
-    const videoFresa2 = await prisma.multimedia.create({
-        data: {
-            name: 'Video de Fresa 2',
-            url: 'https://www.youtube.com/watch?v=MMCbCvZ2pnU',
-            multimediaType: { connect: { id: 1 } },
-            tags: {
-                connect: [
-                    { id: 2 }
-                ]
-            }
-        }
-    })
-    
-    const videoPapa1 = await prisma.multimedia.create({
-        data: {
-            name: 'Video de Papa 1',
-            url: 'https://www.youtube.com/watch?v=XAWaTo4PHig',
-            multimediaType: { connect: { id: 1 } },
-            tags: {
-                connect: [
-                    { id: 1 }
-                ]
-            }
-        }
-    })
-    
-    const videoPapa2 = await prisma.multimedia.create({
-        data: {
-            name: 'Video de Papa 2',
-            url: 'https://www.youtube.com/watch?v=ZAWdrJ_pO30',
-            multimediaType: { connect: { id: 1 } },
-            tags: {
-                connect: [
-                    { id: 1 }
-                ]
-            }
-        }
-    })
-
-    const imgTrigo1 = await prisma.multimedia.create({
-        data: {
-            name: 'Imagen de Trigo 1',
-            url: 'https://kioscostorage.blob.core.windows.net/images/1725227887445-istockphoto-479629438-612x612.jpg',
-            multimediaType: { connect: { id: 2 } },
-            tags: {
-                connect: [
-                    { id: 7 }
-                ]
-            }
-        }
-    })
-    const imgTrigo2 = await prisma.multimedia.create({
-        data: {
-            name: 'Imagen de Trigo 2',
-            url: 'https://kioscostorage.blob.core.windows.net/images/1725227887445-istockphoto-479629438-612x612.jpg',
-            multimediaType: { connect: { id: 2 } },
-            tags: {
-                connect: [
-                    { id: 7 }
-                ]
-            }
-        }
-    })
-}
-
 async function main() {
     console.log('Seeding multimedia types...')
     await createMultimediatypes()
@@ -231,9 +113,6 @@ async function main() {
     await createTags()
     console.log('Tags seeded!')
 
-    console.log('Seeding multimedia...')
-    await createMultimedias()
-    console.log('Multimedia seeded!')
 }
 
 main()
