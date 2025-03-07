@@ -100,6 +100,10 @@ async function createTags() {
     })
 }
 
+async function deleteMultimedia() {
+    await prisma.multimedia.deleteMany();
+}
+
 async function main() {
     console.log('Seeding multimedia types...')
     await createMultimediatypes()
@@ -112,6 +116,10 @@ async function main() {
     console.log('Seeding tags...')
     await createTags()
     console.log('Tags seeded!')
+
+    console.log('Cleaning multimedia...')
+    await deleteMultimedia()
+    console.log('Multimedia cleaned, its empty now!')
 
 }
 
