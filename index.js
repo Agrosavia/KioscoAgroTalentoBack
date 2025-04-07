@@ -9,12 +9,13 @@ require('dotenv').config();
 
 const port = process.env.PORT || 3001;
 const app = express();
+const path = require('path');
 
 // Handle cors a lo maldita sea
 app.use(cors());
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/multimedias', MultimediaRouter);
 app.use('/tags', TagsRouter);
 app.use('/events', EventsRouter);
