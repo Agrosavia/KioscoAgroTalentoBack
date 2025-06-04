@@ -4,7 +4,17 @@ const router = express.Router();
 const multer = require('multer');
 
 // Set up multer for file uploads
-const upload = multer({ dest: 'uploads/' }); 
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
+        cb(null, Date.now() + '-' + file.originalname + '.' +extension);
+    }
+})
+const upload = multer({ storage: storage });
 
 router.get('/', async (req, res) => {
     const events = await eventsService.getEvents(req.query.name, req.query.active);
@@ -29,13 +39,13 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
     // parse values
     active = active === 'true';
-    theme = parseInt(themeId);
+    const theme = parseInt(themeId);
 
     // get the image file from the request
     const image = req.file;
 
     try {
-        const event = await eventsService.createEvent(name, description, active, eventDate, theme, image);
+        const event = await eventsService.createEvent(name, description, active, eventDate, theme, image.filename);
         res.status(201).json(event);
     } catch (e) {
         console.error(e);

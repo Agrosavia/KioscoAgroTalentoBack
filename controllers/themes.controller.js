@@ -4,7 +4,17 @@ const router = express.Router();
 const multer = require('multer');
 
 // Set up multer for file uploads
-const upload = multer({ dest: 'uploads/' }); 
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
+        cb(null, Date.now() + '-' + file.originalname + '.' +extension);
+    }
+})
+const upload = multer({ storage: storage });
 
 router.get('/', async (req, res) => {
     const themes = await themesService.getThemes(req.query.name);
@@ -20,9 +30,9 @@ router.post('/', upload.fields([{name: 'banner', maxCount: 1}, {name: 'backgroun
     if (!name || !primaryColor || !secondaryColor || !tertiaryColor) {
         return res.status(400).json({ error: 'Request must contain "name", "primaryColor", "secondaryColor", "tertiaryColor", "banner" and "background"' });
     }
-    const banner = req.files.banner ? req.files.banner[0] : null;
-    const background = req.files.background ? req.files.background[0] : null;
-    const logo = req.files.logo ? req.files.logo[0] : null;
+    const banner = req.files.banner[0] ? req.files.banner[0].filename : null;
+    const background = req.files.background[0] ? req.files.background[0].filename : null;
+    const logo = req.files.logo[0] ? req.files.logo[0].filename : null;
 
     try {
         const theme = await themesService.createTheme(name, primaryColor, secondaryColor, tertiaryColor, banner, background, logo);

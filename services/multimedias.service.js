@@ -1,6 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const path = require('path');
-const azureBlobService = require('./azureBlobService');
 
 const prisma = new PrismaClient();
 
@@ -59,7 +57,7 @@ async function getMultimediaById(id) {
 async function createMultimedia(name, multimediaType, tagIds, url, file) {
     if (file) {
         // Construct the URL to the file in Blob Storage
-        url = file.path;
+        url = file.filename;
     }
     
     return await prisma.multimedia.create({
@@ -108,9 +106,6 @@ async function deleteMultimedia(id) {
     });
 
     console.log(multimedia);
-    if (multimedia.url && multimedia.multimediaTypeId !== 1) {
-        await azureBlobService.deleteFile(multimedia.url);
-    }
 
     return await prisma.multimedia.delete({
         where: {

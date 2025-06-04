@@ -1,0 +1,1 @@
+Serving static files from: D:\wwwroot\WebServices\ApiKiosco\public

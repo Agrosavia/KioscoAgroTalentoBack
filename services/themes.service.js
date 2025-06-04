@@ -22,31 +22,10 @@ async function createTheme(
     primaryColor,
     secondaryColor,
     tertiaryColor,
-    banner,
-    background,
-    logo
+    bannerUrl,
+    backgroundUrl,
+    logoUrl
 ) {
-
-    const bannerBlobName = `${Date.now()}-${path.basename(banner.originalname)}`;
-    const backgroundBlobName = `${Date.now()}-${path.basename(
-        background.originalname
-    )}`;
-    const logoBlobName = `${Date.now()}-${path.basename(logo.originalname)}`;
-    const bannerUrl = await azureBlobService.uploadFile(
-        "images",
-        banner.path,
-        bannerBlobName
-    );
-    const backgroundUrl = await azureBlobService.uploadFile(
-        "images",
-        background.path,
-        backgroundBlobName
-    );
-    const logoUrl = await azureBlobService.uploadFile(
-        "images",
-        logo.path,
-        logoBlobName
-    );
 
     return await prisma.theme.create({
         data: {

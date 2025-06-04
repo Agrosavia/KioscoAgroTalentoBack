@@ -1,6 +1,4 @@
 const { PrismaClient } = require('@prisma/client');
-const path = require("path");
-const azureBlobService = require("./azureBlobService");
 
 const prisma = new PrismaClient();
 
@@ -30,13 +28,7 @@ async function getEventById(id) {
     });
 }
 
-async function createEvent(name, description, active, date, theme, image) {
-    let imageUrl;
-    if (image) {
-        const imagePath = `${Date.now()}-${path.basename(image.originalname)}`;
-        imageUrl = await azureBlobService.uploadFile('images', image.path, imagePath);
-        
-    }
+async function createEvent(name, description, active, date, theme, imageUrl) {
 
     return await prisma.event.create({
         data: {
@@ -60,12 +52,6 @@ async function updateEvent(id, name, description, active, date, theme, image) {
     });
     
     const existingImage = event.image;
-
-    if (image) {
-        const imagePath = `${Date.now()}-${path.basename(image.originalname)}`;
-        imageUrl = await azureBlobService.uploadFile('images', image.path, imagePath);
-    }
-
 
     console.log(theme)
     return await prisma.event.update({
@@ -163,7 +149,7 @@ async function addMultimediaForEvent(eventId, multimediaId, iconClass, isCarrous
             }
         });
         const multimediaToUpdate = multimedia.multimedias.filter(m => m.sortingOrder >= sortingOrder);
-        multimediaForUpdate.forEach(async m => {
+        multimediaToUpdate.forEach(async m => {
             await prisma.multimedia.update({
                 where: {
                     id: m.id
