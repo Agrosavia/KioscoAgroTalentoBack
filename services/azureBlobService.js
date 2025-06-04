@@ -1,25 +1,28 @@
-// services/azureBlobService.js
-const { BlobServiceClient } = require("@azure/storage-blob");
+const fs = require('fs');
+const path = require('path');
 
-const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const uploadFolder = 'uploads/'; 
 
-const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
 
-async function uploadFile(containerName, filePath, blobName) {
-    const containerClient = blobServiceClient.getContainerClient(containerName);
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
-    const uploadBlobResponse = await blockBlobClient.uploadFile(filePath);
-    return `https://${blobServiceClient.accountName}.blob.core.windows.net/${containerName}/${blobName}`;
+if (!fs.existsSync(uploadFolder)) {
+    fs.mkdirSync(uploadFolder, { recursive: true });
 }
 
-async function deleteFile(containerName, blobName) {
-    const containerClient = blobServiceClient.getContainerClient(containerName);
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    console.log('blob name: ', blobName);
-    console.log('blockBlobClient: ', blockBlobClient);
+async function deleteFile(blobName) {
+    const filePath = path.join(uploadFolder, blobName);
+    console.log('Deleting file:', filePath);
 
-    await blockBlobClient.deleteIfExists();
+    try {
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            console.log('File deleted successfully');
+        } else {
+            console.log('File not found');
+        }
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        throw new Error('File deletion failed');
+    }
 }
 
-module.exports = { uploadFile, deleteFile, blobServiceClient };
+module.exports = { deleteFile };
