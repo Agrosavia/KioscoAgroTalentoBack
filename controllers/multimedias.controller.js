@@ -4,8 +4,17 @@ const multimediaService = require('../services/multimedias.service');
 
 const router = express.Router();
 
-// Set up multer for file uploads
-const upload = multer({ dest: 'uploads/' }); 
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        let extArray = file.mimetype.split("/");
+        let extension = extArray[extArray.length - 1];
+        cb(null,Date.now() + '-' + file.originalname + '.' +extension);
+    }
+})
+const upload = multer({ storage: storage });
 
 // GET all multimedia items
 router.get('/', async (req, res) => {
@@ -27,6 +36,9 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Validate required fields
     if (!multimediaType || !name) {
         return res.status(400).json({ error: 'Request must contain "multimediaType", "name" and "iconClass"' });
+    }
+    if (!+multimediaType) {
+        return res.status(400).json({ error: 'Invalid multimediaType. Must be a number' });
     }
     if (multimediaType === 'YOUTUBE_VIDEO' && !url) {
         return res.status(400).json({ error: 'Request must contain url for tipoMultimedia "YOUTUBE_VIDEO"' });
