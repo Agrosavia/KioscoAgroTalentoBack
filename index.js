@@ -12,7 +12,6 @@ const app = express();
 const path = require("path");
 
 const fs = require("fs");
-const path = require("path");
 
 const uploadsPath = path.join(__dirname, "public", "uploads");
 if (!fs.existsSync(uploadsPath)) {
