@@ -14,13 +14,14 @@ const path = require('path');
 // Handle cors a lo maldita sea
 app.use(cors());
 
+// change all routes to routes without ApiKiosco prefix when working locally
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/multimedias', MultimediaRouter);
-app.use('/tags', TagsRouter);
-app.use('/events', EventsRouter);
-app.use('/themes', ThemesRouter);
-app.use('/multimedia-types', MultimediaTypesRouter);
+app.use("/ApiKiosco", express.static(path.join(__dirname, "public")));
+app.use("/ApiKiosco/multimedias", MultimediaRouter);
+app.use("/ApiKiosco/tags", TagsRouter);
+app.use("/ApiKiosco/events", EventsRouter);
+app.use("/ApiKiosco/themes", ThemesRouter);
+app.use("/ApiKiosco/multimedia-types", MultimediaTypesRouter);
 
 
 app.listen(port, () => {
