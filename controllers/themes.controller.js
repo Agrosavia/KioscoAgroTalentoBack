@@ -24,11 +24,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', upload.fields([{name: 'banner', maxCount: 1}, {name: 'background', maxCount: 1}, {name: 'logo', maxCount: 1}]), async (req, res) => {
     const { name, primaryColor, secondaryColor, tertiaryColor } = req.body;
-    console.log(req.body);
-    
+
     // Validate required fields
-    if (!name || !primaryColor || !secondaryColor || !tertiaryColor) {
-        return res.status(400).json({ error: 'Request must contain "name", "primaryColor", "secondaryColor", "tertiaryColor", "banner" and "background"' });
+    if (!name || !primaryColor || !secondaryColor || !tertiaryColor || !req.files.banner || !req.files.background || !req.files.logo) {
+        return res.status(400).json({ error: 'Request must contain "name", "primaryColor", "secondaryColor", "tertiaryColor", "banner", "background" and "logo"' });
     }
     const banner = req.files.banner[0] ? req.files.banner[0].filename : null;
     const background = req.files.background[0] ? req.files.background[0].filename : null;
@@ -56,9 +55,10 @@ router.get('/:id', upload.fields([{name: 'banner', maxCount: 1}, {name: 'backgro
 
 router.put('/:id', upload.fields([{name: 'banner', maxCount: 1}, {name: 'background', maxCount: 1}, {name: 'logo', maxCount: 1}]), async (req, res) => {
     const { name, primaryColor, secondaryColor, tertiaryColor } = req.body;
-    const banner = req.files.banner ? req.files.banner[0] : null;
-    const background = req.files.background ? req.files.background[0] : null;
-    const logo = req.files.logo ? req.files.logo[0] : null;
+
+    const banner = req.files.banner ? req.files.banner[0].filename : null;
+    const background = req.files.background ? req.files.background[0].filename : null;
+    const logo = req.files.logo ? req.files.logo[0].filename : null;
     const theme = await themesService.updateTheme(req.params.id, name, primaryColor, secondaryColor, tertiaryColor, banner, background, logo);
     res.status(200).json(theme);
 }

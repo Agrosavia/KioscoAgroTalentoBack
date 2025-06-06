@@ -64,24 +64,9 @@ async function updateTheme(
         throw new Error("Theme not found");
     }
 
-    let bannerUrl = existingTheme.banner;
-    let backgroundUrl = existingTheme.background;
-    let logoUrl = existingTheme.logo;
-
-    if (banner) {
-        const bannerBlobName = `${Date.now()}-${path.basename(banner.originalname)}`;
-        bannerUrl = await azureBlobService.uploadFile("images", banner.path, bannerBlobName);
-    }
-
-    if (background) {
-        const backgroundBlobName = `${Date.now()}-${path.basename(background.originalname)}`;
-        backgroundUrl = await azureBlobService.uploadFile("images", background.path, backgroundBlobName);
-    }
-
-    if (logo) {
-        const logoBlobName = `${Date.now()}-${path.basename(logo.originalname)}`;
-        logoUrl = await azureBlobService.uploadFile("images", logo.path, logoBlobName);
-    }
+    let bannerUrl = banner ?? existingTheme.banner;
+    let backgroundUrl = background ?? existingTheme.background;
+    let logoUrl = logo ?? existingTheme.logo;
 
     return await prisma.theme.update({
         where: {
@@ -111,9 +96,6 @@ async function deleteTheme(id) {
     if (!theme) {
         throw new Error("Theme not found");
     }
-
-    await azureBlobService.deleteFile('images', path.basename(new URL(theme.banner).pathname));
-    await azureBlobService.deleteFile('images', path.basename(new URL(theme.background).pathname));
 
     return await prisma.theme.delete({
         where: {
