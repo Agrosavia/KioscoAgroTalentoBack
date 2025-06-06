@@ -11,6 +11,14 @@ const port = process.env.PORT || 3001;
 const app = express();
 const path = require("path");
 
+const fs = require("fs");
+const path = require("path");
+
+const uploadsPath = path.join(__dirname, "public", "uploads");
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+  console.log("🛠 Carpeta uploads creada");
+}
 // Handle cors a lo maldita sea
 app.use(cors());
 
